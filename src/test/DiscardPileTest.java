@@ -4,23 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
-class FakeCard implements CardInterface {
-    private GameCardType _cardType;
-    
-    FakeCard(GameCardType __cardType) {
-        _cardType = __cardType;
-    }
-    
-    public void evaluate(TurnStatus t) {
-    }
-
-    public GameCardType cardType() {
-    	return _cardType;
-    }
-}
-
-
 public class DiscardPileTest  {
+
     private DiscardPile pile1;
     private DiscardPile pile2;
 
@@ -33,7 +18,7 @@ public class DiscardPileTest  {
         assertTrue(pile.getTopCard().isEmpty());
     }
 
-    void setUp() {
+    private void setUp() {
         pile1 = new DiscardPile(new ArrayList<CardInterface>() {{
             add(new FakeCard(GameCardType.GAME_CARD_TYPE_ESTATE));
             add(new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER));
