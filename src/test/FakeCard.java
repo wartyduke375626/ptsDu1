@@ -8,7 +8,7 @@ public class FakeCard implements CardInterface {
     public void evaluate(TurnStatus t) {
     }
 
-    public GameCardType cardType() {
+    public GameCardType getCardType() {
         return _cardType;
     }
 }

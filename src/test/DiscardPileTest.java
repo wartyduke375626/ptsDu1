@@ -11,7 +11,7 @@ public class DiscardPileTest  {
 
     private void assertTopIs(DiscardPile pile, String string) {
         assertTrue(pile.getTopCard().isPresent());
-        assertEquals(pile.getTopCard().get().cardType().getName(), string);
+        assertEquals(pile.getTopCard().get().getCardType().getName(), string);
     }
         
     private void assertTopIsNone(DiscardPile  pile) {

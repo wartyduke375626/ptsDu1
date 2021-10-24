@@ -6,8 +6,7 @@ public class Deck{
     private List<CardInterface> cards = new ArrayList<>();
     private final DiscardPile discardPile;
 
-    public Deck(List<CardInterface> initialCards, DiscardPile discardPile) {
-        cards.addAll(initialCards);
+    public Deck(DiscardPile discardPile) {
         this.discardPile = discardPile;
     }
 

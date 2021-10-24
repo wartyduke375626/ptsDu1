@@ -16,7 +16,7 @@ public class DeckTest {
             cards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_FESTIVAL));
         }
         discardPile = new DiscardPile(cards);
-        deck = new Deck(new ArrayList<>(), discardPile);
+        deck = new Deck(discardPile);
     }
 
     @Test

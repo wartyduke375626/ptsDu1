@@ -30,13 +30,11 @@ public class HandTest {
     public void test_play() {
         setUp();
         Optional<CardInterface> card = hand.play(0);
-        assertEquals(1, hand.getCards().size());
+        assertEquals(1, hand.getSize());
         assertTrue(card.isPresent());
         CardInterface card1 = card.get();
-        assertEquals(card1.cardType(), GameCardType.GAME_CARD_TYPE_MARKET);
-        card = hand.play(10);
-        assertTrue(card.isEmpty());
-        assertEquals(1, hand.getCards().size());
+        assertEquals(card1.getCardType(), GameCardType.GAME_CARD_TYPE_MARKET);
+        assertEquals(1, hand.getSize());
         card = hand.play(0);
         assertTrue(card.isEmpty());
     }
