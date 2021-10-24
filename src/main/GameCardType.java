@@ -1,15 +1,15 @@
 public class GameCardType {
-    int plusActions;
-    int plusBuys;
-    int plusCards;
-    int plusCoins;
-    int points;
-    int cost;
-    boolean isAction;
-    String name;
-    String description;
+    private final int plusActions;
+    private final int plusBuys;
+    private final int plusCards;
+    private final int plusCoins;
+    private final int points;
+    private final int cost;
+    private final boolean isAction;
+    private final String name;
+    private final String description;
     
-    public GameCardType(int pa, int pb, int pca, int pco, int p, int c, boolean isA, String n, String d) {
+    private GameCardType(int pa, int pb, int pca, int pco, int p, int c, boolean isA, String n, String d) {
         plusActions = pa;
         plusBuys = pb;
         plusCards = pca;
