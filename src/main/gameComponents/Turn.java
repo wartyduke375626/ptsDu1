@@ -34,10 +34,7 @@ public class Turn {
         Optional<CardInterface> playedCard = hand.play(handIndex);
         if (playedCard.isEmpty()) return false;
         play.putTo(playedCard.get());
-        turnStatus.setActions(turnStatus.getActions() + playedCard.get().getGameCardType().getPlusActions());
-        turnStatus.setBuys(turnStatus.getBuys() + playedCard.get().getGameCardType().getPlusBuys());
-        turnStatus.setCoins(turnStatus.getCoins() + playedCard.get().getGameCardType().getPlusCoins());
-        hand.addCards(deck.draw(playedCard.get().getGameCardType().getPlusCards()));
+        hand.addCards(deck.draw(playedCard.get().evaluate(turnStatus)));
         return true;
     }
 }

@@ -1,5 +1,7 @@
 package gameComponents;
 
+import java.util.Objects;
+
 public class GameCardType {
     private final int plusActions;
     private final int plusBuys;
@@ -8,6 +10,20 @@ public class GameCardType {
     private final int points;
     private final int cost;
     private final boolean isAction;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameCardType that = (GameCardType) o;
+        return plusActions == that.plusActions && plusBuys == that.plusBuys && plusCards == that.plusCards && plusCoins == that.plusCoins && points == that.points && cost == that.cost && isAction == that.isAction && Objects.equals(name, that.name) && Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(plusActions, plusBuys, plusCards, plusCoins, points, cost, isAction, name, description);
+    }
+
     private final String name;
     private final String description;
     

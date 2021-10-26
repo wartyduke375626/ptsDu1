@@ -11,13 +11,18 @@ public class TurnTest {
 
     private CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_MARKET);
 
-    Turn turn1;
-    Turn turn2;
-    TurnStatus turnStatus1 = new TurnStatus(0,0,0);
-    TurnStatus turnStatus2 = new TurnStatus(0,0,0);
+    TurnStatus turnStatus = new TurnStatus(0,0,0);
+    DiscardPileInterface discardPile;
+    DeckInterface deck;
+    HandInterface hand;
+    PlayInterface play;
+
+    private int handSize = 5;
+    private Turn turn;
 
     private void setUp() {
-        DiscardPileInterface discardPile = new DiscardPileInterface() {
+        discardPile = new DiscardPileInterface() {
+            private int size = 0;
             @Override
             public Optional<CardInterface> getTopCard() {
                 return Optional.empty();
@@ -25,11 +30,12 @@ public class TurnTest {
 
             @Override
             public void addCards(List<CardInterface> cards) {
+                size += cards.size();
             }
 
             @Override
             public int getSize() {
-                return 0;
+                return size;
             }
 
             @Override
@@ -37,87 +43,81 @@ public class TurnTest {
                 return null;
             }
         };
-        DeckInterface deck = new DeckInterface() {
+        deck = new DeckInterface() {
             @Override
             public List<CardInterface> draw(int count) {
                 List<CardInterface> ret= new ArrayList<>();
-                ret.add(testCard);
+                for (int i=0; i<count; i++) ret.add(testCard);
                 return ret;
             }
         };
-        HandInterface hand1 = new HandInterface() {
+        hand = new HandInterface() {
+            private int size = handSize;
             @Override
             public void addCards(List<CardInterface> cards) {
+                size += cards.size();
             }
 
             @Override
             public int getSize() {
-                return Integer.MAX_VALUE;
+                return size;
             }
 
             @Override
             public List<CardInterface> throwAll() {
-                return null;
+                List<CardInterface> ret= new ArrayList<>();
+                for (int i=0; i<size; i++) ret.add(testCard);
+                return ret;
             }
 
             @Override
             public boolean isActionCard(int cardIndex) {
-                return true;
+                return cardIndex%2 == 0;
             }
 
             @Override
             public Optional<CardInterface> play(int cardIndex) {
-                return Optional.of(testCard);
+                if (isActionCard(cardIndex)) return Optional.of(testCard);
+                else return Optional.empty();
             }
         };
-        HandInterface hand2 = new HandInterface() {
-            @Override
-            public void addCards(List<CardInterface> cards) {
-            }
-
-            @Override
-            public int getSize() {
-                return Integer.MAX_VALUE;
-            }
-
-            @Override
-            public List<CardInterface> throwAll() {
-                return null;
-            }
-
-            @Override
-            public boolean isActionCard(int cardIndex) {
-                return false;
-            }
-
-            @Override
-            public Optional<CardInterface> play(int cardIndex) {
-                return Optional.empty();
-            }
-        };
-        PlayInterface play = new PlayInterface() {
+        play = new PlayInterface() {
+            private int size = 0;
             @Override
             public void putTo(CardInterface card) {
+                size++;
             }
 
             @Override
             public List<CardInterface> throwAll() {
-                return null;
+                List<CardInterface> ret= new ArrayList<>();
+                for (int i=0; i<size; i++) ret.add(testCard);
+                return ret;
             }
         };
-        turn1 = new Turn(turnStatus1, discardPile, deck, hand1, play);
-        turn2 = new Turn(turnStatus2, discardPile, deck, hand2, play);
+        turn = new Turn(turnStatus, discardPile, deck, hand, play);
     }
 
     @Test
     public void test_playCard() {
         setUp();
-        boolean flag = turn1.playCard(1);
+        boolean flag = turn.playCard(0);
         assertTrue(flag);
-        assertEquals(turnStatus1.getActions(),1);
-        assertEquals(turnStatus1.getBuys(),1);
-        assertEquals(turnStatus1.getCoins(),1);
-        flag = turn2.playCard(1);
+        assertEquals(play.throwAll().size(), 1);
+        flag = turn.playCard(1);
         assertFalse(flag);
+        assertEquals(play.throwAll().size(), 1);
+    }
+
+    @Test
+    public void test_newTurn() {
+        setUp();
+        turn.playCard(0);
+        turn.playCard(0);
+        turn.playCard(0);
+        assertEquals(discardPile.getSize(), 0);
+        turn.newTurn();
+        assertEquals(discardPile.getSize(), 8);
+        assertEquals(hand.getSize(), 5);
     }
 }
