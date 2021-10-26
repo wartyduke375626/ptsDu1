@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-public class Deck{
+public class Deck implements DeckInterface{
 
     // Cards in deck are represented by queue. The top of the deck is the front of the queue.
     private Queue<CardInterface> cards = new ArrayDeque<>();
@@ -14,6 +14,7 @@ public class Deck{
         this.discardPile = discardPile;
     }
 
+    @Override
     public List<CardInterface> draw(int count) {
         if (count > cards.size()) {
             cards.addAll(discardPile.shuffle());

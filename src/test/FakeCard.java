@@ -1,14 +1,12 @@
 public class FakeCard implements CardInterface {
-    private GameCardType _cardType;
+    private final GameCardType cardType;
 
-    FakeCard(GameCardType __cardType) {
-        _cardType = __cardType;
+    FakeCard(GameCardType cardType) {
+        this.cardType = cardType;
     }
 
-    public void evaluate(TurnStatus t) {
-    }
-
-    public GameCardType getCardType() {
-        return _cardType;
+    @Override
+    public GameCardType getGameCardType() {
+        return cardType;
     }
 }
