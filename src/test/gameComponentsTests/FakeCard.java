@@ -1,3 +1,8 @@
+package gameComponentsTests;
+
+import gameComponents.CardInterface;
+import gameComponents.GameCardType;
+
 public class FakeCard implements CardInterface {
     private final GameCardType cardType;
 

@@ -1,3 +1,5 @@
+package gameComponents;
+
 public class TurnStatus {
     private int actions;
     private int buys;

@@ -1,3 +1,5 @@
+package gameComponents;
+
 import java.util.List;
 
 public interface DeckInterface {

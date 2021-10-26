@@ -1,3 +1,8 @@
+package gameComponentsTests;
+
+import gameComponents.CardInterface;
+import gameComponents.GameCardType;
+import gameComponents.Hand;
 import org.junit.Test;
 
 import java.util.ArrayList;

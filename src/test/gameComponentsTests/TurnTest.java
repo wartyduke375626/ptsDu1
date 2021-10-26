@@ -1,3 +1,6 @@
+package gameComponentsTests;
+
+import gameComponents.*;
 import org.junit.Test;
 
 import java.util.*;

@@ -1,3 +1,9 @@
+package gameComponentsTests;
+
+import gameComponents.CardInterface;
+import gameComponents.Deck;
+import gameComponents.DiscardPileInterface;
+import gameComponents.GameCardType;
 import org.junit.Test;
 
 import java.util.*;

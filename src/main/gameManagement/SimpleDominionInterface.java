@@ -1,3 +1,5 @@
+package gameManagement;
+
 import java.util.Optional;
  
 public interface SimpleDominionInterface {

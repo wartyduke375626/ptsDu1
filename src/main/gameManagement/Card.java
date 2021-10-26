@@ -1,3 +1,5 @@
+package gameManagement;
+
 public class Card {
     public String name;
     public String description;

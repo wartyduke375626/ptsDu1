@@ -1,5 +1,10 @@
+package gameComponentsTests;
+
 import java.util.ArrayList;
 
+import gameComponents.CardInterface;
+import gameComponents.DiscardPile;
+import gameComponents.GameCardType;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
