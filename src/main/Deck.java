@@ -1,22 +1,27 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class Deck{
 
-    private List<CardInterface> cards = new ArrayList<>();
-    private final DiscardPile discardPile;
+    // Cards in deck are represented by queue. The top of the deck is the front of the queue.
+    private Queue<CardInterface> cards = new ArrayDeque<>();
+    private final DiscardPileInterface discardPile;
 
-    public Deck(DiscardPile discardPile) {
+
+    public Deck(DiscardPileInterface discardPile) {
         this.discardPile = discardPile;
     }
 
     public List<CardInterface> draw(int count) {
-        if (count > discardPile.getSize() + cards.size()) throw new IndexOutOfBoundsException();
+        if (count > cards.size()) {
+            cards.addAll(discardPile.shuffle());
+            if (count > cards.size()) count = cards.size();
+        }
         List<CardInterface> drawnCards = new ArrayList<>();
         for (int i=0; i<count; i++) {
-            if (cards.size() == 0) cards.addAll(discardPile.shuffle());
-            int lastIndex = cards.size()-1;
-            drawnCards.add(cards.remove(lastIndex));
+            drawnCards.add(cards.remove());
         }
         return drawnCards;
     }

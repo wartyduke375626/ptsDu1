@@ -6,35 +6,52 @@ import static org.junit.Assert.*;
 
 public class DeckTest {
 
+    private Set<CardInterface> expectedCards;
     private Deck deck;
-    private DiscardPile discardPile;
 
     private void setUp() {
-        List<CardInterface> cards = new ArrayList<>();
-        for (int i=0; i<3; i++){
-            cards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_SMITHY));
-            cards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_FESTIVAL));
+        expectedCards = new HashSet<>();
+        for (int i=0; i<5; i++) {
+            expectedCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_ESTATE));
+            expectedCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_FESTIVAL));
         }
-        discardPile = new DiscardPile(cards);
-        deck = new Deck(discardPile);
+        deck = new Deck(new DiscardPileInterface() {
+            boolean empty = false;
+            @Override
+            public Optional<CardInterface> getTopCard() {
+                return Optional.empty();
+            }
+
+            @Override
+            public void addCards(List<CardInterface> cards) {
+
+            }
+
+            @Override
+            public int getSize() {
+                if (empty) return 0;
+                else return 10;
+            }
+
+            @Override
+            public List<CardInterface> shuffle() {
+                if (empty) return new ArrayList<>();
+                empty = true;
+                return new ArrayList<>(expectedCards);
+            }
+        });
     }
 
     @Test
     public void test_draw() {
         setUp();
-        List<CardInterface> cardsDrawn = deck.draw(1);
-        discardPile.addCards(cardsDrawn);
-        Set<CardInterface> deckCards1 = new HashSet<>(cardsDrawn);
-        for(int i=0; i<5; i++) {
-            List<CardInterface> newCardsDrawn = deck.draw(1);
-            discardPile.addCards(newCardsDrawn);
-            assertNotEquals(cardsDrawn.get(0), newCardsDrawn.get(0));
-            deckCards1.addAll(newCardsDrawn);
-        }
+        Set<CardInterface> cardsDrawn = new HashSet<>(deck.draw(5));
+        assertEquals(cardsDrawn.size(),5);
+        cardsDrawn.addAll(deck.draw(5));
         //discardPile should be shuffled at this point and put into deck
-        Set<CardInterface> deckCards2 = new HashSet<>(deck.draw(6));
-        assertEquals(discardPile.getSize(), 0);
-        assertEquals(deckCards1, deckCards2);
+        assertEquals(cardsDrawn, expectedCards);
+        cardsDrawn.addAll(deck.draw(5));
+        assertEquals(cardsDrawn, expectedCards);
 
     }
 }

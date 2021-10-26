@@ -3,7 +3,7 @@ import java.util.Optional;
 
 public class Turn {
 
-    private DiscardPile discardPile;
+    private DiscardPileInterface discardPile;
     private Deck deck;
     private Hand hand;
     private Play play;
