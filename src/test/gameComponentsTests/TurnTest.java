@@ -9,13 +9,14 @@ import static org.junit.Assert.*;
 
 public class TurnTest {
 
-    private CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_MARKET);
+    private CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER);
 
-    TurnStatus turnStatus = new TurnStatus(0,0,0);
-    DiscardPileInterface discardPile;
-    DeckInterface deck;
-    HandInterface hand;
-    PlayInterface play;
+    private TurnStatus turnStatus = new TurnStatus(2,1,0);
+    private DiscardPileInterface discardPile;
+    private DeckInterface deck;
+    private HandInterface hand;
+    private PlayInterface play;
+    private Map<GameCardType, BuyDeckInterface> buyDecks = new HashMap<>();
 
     private int handSize = 5;
     private Turn turn;
@@ -67,6 +68,7 @@ public class TurnTest {
             public List<CardInterface> throwAll() {
                 List<CardInterface> ret= new ArrayList<>();
                 for (int i=0; i<size; i++) ret.add(testCard);
+                size = 0;
                 return ret;
             }
 
@@ -95,7 +97,18 @@ public class TurnTest {
                 return ret;
             }
         };
-        turn = new Turn(turnStatus, discardPile, deck, hand, play);
+        buyDecks.put(testCard.getGameCardType(), new BuyDeckInterface() {
+            @Override
+            public Optional<CardInterface> buy() {
+                return Optional.of(new FakeCard(testCard.getGameCardType()));
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+        });
+        turn = new Turn(turnStatus, discardPile, deck, hand, play, buyDecks);
     }
 
     @Test
@@ -105,8 +118,15 @@ public class TurnTest {
         assertTrue(flag);
         assertEquals(play.throwAll().size(), 1);
         flag = turn.playCard(1);
+        turn.playCard(1);
         assertFalse(flag);
         assertEquals(play.throwAll().size(), 1);
+        turn.playCard(0);
+        assertEquals(play.throwAll().size(), 2);
+        assertEquals(turnStatus.getActions(), 0);
+        flag = turn.playCard(0);
+        assertFalse(flag);
+        assertEquals(play.throwAll().size(), 2);
     }
 
     @Test
@@ -114,10 +134,21 @@ public class TurnTest {
         setUp();
         turn.playCard(0);
         turn.playCard(0);
-        turn.playCard(0);
-        assertEquals(discardPile.getSize(), 0);
         turn.newTurn();
-        assertEquals(discardPile.getSize(), 8);
+        assertEquals(discardPile.getSize(), 7);
         assertEquals(hand.getSize(), 5);
+    }
+
+    @Test
+    public void test_buyCard() {
+        setUp();
+        boolean flag = turn.buyCard(testCard.getGameCardType());
+        assertTrue(flag);
+        assertEquals(discardPile.getSize(), 1);
+        assertEquals(turnStatus.getBuys(), 0);
+        flag = turn.buyCard(testCard.getGameCardType());
+        assertFalse(flag);
+        assertEquals(discardPile.getSize(), 1);
+
     }
 }

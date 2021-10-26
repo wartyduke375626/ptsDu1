@@ -13,8 +13,13 @@ public class BuyDeck implements BuyDeckInterface{
     }
 
     @Override
+    public boolean isEmpty() {
+        return cardCount == 0;
+    }
+
+    @Override
     public Optional<CardInterface> buy() {
-        if (cardCount > 0) {
+        if (!isEmpty()) {
             cardCount--;
             return Optional.of(new GameCard(gameCardType));
         }
