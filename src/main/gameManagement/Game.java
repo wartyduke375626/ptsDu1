@@ -9,14 +9,19 @@ public class Game {
 
     private TurnInterface turnInterface;
     private boolean isPlayCardPhase;
+    private EndGameStrategy endGameStrategy;
+    private boolean isGameOver;
 
-    public Game(TurnStatus newTurnStatus, List<CardInterface> initialCards, Map<GameCardType, BuyDeckInterface> buyDecks) {
+    public Game(TurnStatus newTurnStatus, List<CardInterface> initialCards, Map<GameCardType, BuyDeckInterface> buyDecks, EndGameStrategy endGameStrategy) {
         isPlayCardPhase = true;
         DiscardPileInterface discardPile = new DiscardPile(initialCards);
         turnInterface = new Turn(newTurnStatus, discardPile, new Deck(discardPile), new Hand(), new Play(), buyDecks);
+        this.endGameStrategy = endGameStrategy;
+        isGameOver = endGameStrategy.isGameOver();
     }
 
-    public boolean playCard() {
+    public boolean playCard(int handIndex) {
+        if (isPlayCardPhase) return turnInterface.playCard(handIndex);
         return false;
     }
 
@@ -26,7 +31,8 @@ public class Game {
         return true;
     }
 
-    public boolean buyCard() {
+    public boolean buyCard(GameCardType gameCardType) {
+        if (!isPlayCardPhase) return turnInterface.buyCard(gameCardType);
         return false;
     }
 
@@ -34,7 +40,12 @@ public class Game {
         if (isPlayCardPhase) return false;
         isPlayCardPhase = true;
         turnInterface.newTurn();
+        isGameOver = endGameStrategy.isGameOver();
         return true;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
     }
 
 }
