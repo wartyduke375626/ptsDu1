@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class Turn {
+public class Turn implements TurnInterface {
 
     private TurnStatus turnStatus;
     private DiscardPileInterface discardPile;
@@ -24,16 +24,19 @@ public class Turn {
 
     }
 
+    @Override
     public void setTurnStatus(TurnStatus turnStatus) {
         this.turnStatus = turnStatus;
     }
 
+    @Override
     public void newTurn() {
         discardPile.addCards(play.throwAll());
         discardPile.addCards(hand.throwAll());
         hand.addCards(deck.draw(5));
     }
 
+    @Override
     public boolean playCard(int handIndex) {
         if (turnStatus.getActions() == 0) return false;
         if (handIndex >= hand.getSize()) return false;
@@ -45,6 +48,7 @@ public class Turn {
         return true;
     }
 
+    @Override
     public boolean buyCard(GameCardType gameCardType) {
         if (turnStatus.getBuys() == 0) return false;
         if (turnStatus.getCoins() < gameCardType.getCost()) return false;
