@@ -5,15 +5,14 @@ import gameComponents.GameCardType;
 import gameComponents.Hand;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 public class HandTest {
 
     private Hand hand;
+    private Hand emptyHand;
     private List<CardInterface> handCards;
 
     private void setUp() {
@@ -22,6 +21,34 @@ public class HandTest {
         handCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_MARKET));
         handCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_ESTATE));
         hand.addCards(handCards);
+        emptyHand = new Hand();
+    }
+
+    @Test
+    public void test_throwAll() {
+        setUp();
+        assertEquals(hand.getSize(), 2);
+        Set<CardInterface> expectedThrow = new HashSet<>(handCards);
+        Set<CardInterface> thrown = new HashSet<>(hand.throwAll());
+        assertEquals(hand.getSize(), 0);
+        assertEquals(expectedThrow, thrown);
+        assertEquals(emptyHand.getSize(), 0);
+        thrown = new HashSet<>(emptyHand.throwAll());
+        assertTrue(thrown.isEmpty());
+        assertEquals(emptyHand.getSize(), 0);
+    }
+
+    @Test
+    public void test_addCards_getSize() {
+        hand = new Hand();
+        handCards = new ArrayList<>();
+        assertEquals(hand.getSize(), 0);
+        handCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER));
+        handCards.add(new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER));
+        hand.addCards(handCards);
+        assertEquals(hand.getSize(), 2);
+        hand.addCards(handCards);
+        assertEquals(hand.getSize(), 4);
     }
 
     @Test
@@ -29,6 +56,8 @@ public class HandTest {
         setUp();
         assertTrue(hand.isActionCard(0));
         assertFalse(hand.isActionCard(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> hand.isActionCard(2));
+        assertThrows(IndexOutOfBoundsException.class, () -> emptyHand.isActionCard(0));
     }
 
     @Test
@@ -42,5 +71,7 @@ public class HandTest {
         assertEquals(1, hand.getSize());
         card = hand.play(0);
         assertTrue(card.isEmpty());
+        assertThrows(IndexOutOfBoundsException.class, () -> hand.play(1));
+        assertThrows(IndexOutOfBoundsException.class, () -> emptyHand.play(0));
     }
 }

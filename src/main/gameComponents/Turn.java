@@ -48,6 +48,7 @@ public class Turn {
     public boolean buyCard(GameCardType gameCardType) {
         if (turnStatus.getBuys() == 0) return false;
         if (turnStatus.getCoins() < gameCardType.getCost()) return false;
+        if (!buyDecks.containsKey(gameCardType)) return false;
         Optional<CardInterface> boughtCard = buyDecks.get(gameCardType).buy();
         if (boughtCard.isEmpty()) return false;
         turnStatus.setBuys(turnStatus.getBuys()-1);

@@ -33,6 +33,7 @@ public class Hand implements HandInterface {
 
     @Override
     public Optional<CardInterface> play(int cardIndex) {
+        if (cardIndex >= cardsInHand.size()) throw new IndexOutOfBoundsException();
         if (!isActionCard(cardIndex)) return Optional.empty();
         CardInterface cardPlayed = cardsInHand.remove(cardIndex);
         return Optional.of(cardPlayed);
