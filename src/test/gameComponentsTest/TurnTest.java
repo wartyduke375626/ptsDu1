@@ -11,14 +11,14 @@ public class TurnTest {
 
     private CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER);
 
-    private TurnStatus turnStatus = new TurnStatus(2,1,0);
+    private final TurnStatus newTurnStatus = new TurnStatus(2,1,0);
     private DiscardPileInterface discardPile;
     private DeckInterface deck;
     private HandInterface hand;
     private PlayInterface play;
-    private Map<GameCardType, BuyDeckInterface> buyDecks = new HashMap<>();
+    private final Map<GameCardType, BuyDeckInterface> buyDecks = new HashMap<>();
 
-    private int handSize = 5;
+    private final int handSize = 5;
     private Turn turn;
 
     private void setUp() {
@@ -108,7 +108,7 @@ public class TurnTest {
                 return false;
             }
         });
-        turn = new Turn(turnStatus, discardPile, deck, hand, play, buyDecks);
+        turn = new Turn(newTurnStatus, discardPile, deck, hand, play, buyDecks);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class TurnTest {
         assertEquals(play.throwAll().size(), 1);
         turn.playCard(0);
         assertEquals(play.throwAll().size(), 2);
-        assertEquals(turnStatus.getActions(), 0);
+        assertEquals(turn.getCurrentTurnStatus().getActions(), 0);
         flag = turn.playCard(0);
         assertFalse(flag);
         assertEquals(play.throwAll().size(), 2);
@@ -134,9 +134,18 @@ public class TurnTest {
         setUp();
         turn.playCard(0);
         turn.playCard(0);
+        turn.buyCard(testCard.getGameCardType());
         turn.newTurn();
-        assertEquals(discardPile.getSize(), 7);
+        /* discardPile will contain:
+            5 cards thrown from hand,
+            2 cards thrown from play,
+            1 card bought from buyDeck
+         */
+        assertEquals(discardPile.getSize(), 8);
         assertEquals(hand.getSize(), 5);
+        assertEquals(turn.getCurrentTurnStatus().getActions(), newTurnStatus.getActions());
+        assertEquals(turn.getCurrentTurnStatus().getBuys(), newTurnStatus.getBuys());
+        assertEquals(turn.getCurrentTurnStatus().getCoins(), newTurnStatus.getCoins());
     }
 
     @Test
@@ -145,7 +154,7 @@ public class TurnTest {
         boolean flag = turn.buyCard(testCard.getGameCardType());
         assertTrue(flag);
         assertEquals(discardPile.getSize(), 1);
-        assertEquals(turnStatus.getBuys(), 0);
+        assertEquals(turn.getCurrentTurnStatus().getBuys(), 0);
         flag = turn.buyCard(testCard.getGameCardType());
         assertFalse(flag);
         assertEquals(discardPile.getSize(), 1);

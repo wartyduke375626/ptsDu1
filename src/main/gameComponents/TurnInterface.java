@@ -1,7 +1,7 @@
 package gameComponents;
 
 public interface TurnInterface {
-    public void setTurnStatus(TurnStatus turnStatus);
+    public TurnStatus getCurrentTurnStatus();
     public void newTurn();
     public boolean playCard(int handIndex);
     public boolean buyCard(GameCardType gameCardType);

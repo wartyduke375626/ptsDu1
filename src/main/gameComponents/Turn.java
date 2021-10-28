@@ -8,14 +8,16 @@ import java.util.Optional;
 public class Turn implements TurnInterface {
 
     private TurnStatus turnStatus;
+    private final TurnStatus newTurnStatus; //TurnStatus values that will be set after end of each turn
     private DiscardPileInterface discardPile;
     private DeckInterface deck;
     private HandInterface hand;
     private PlayInterface play;
     private Map<GameCardType, BuyDeckInterface> buyDecks;
 
-    public Turn(TurnStatus firstTurnStatus, DiscardPileInterface discardPile, DeckInterface deck, HandInterface hand, PlayInterface play, Map<GameCardType, BuyDeckInterface> buyDecks) {
-        turnStatus = firstTurnStatus;
+    public Turn(TurnStatus newTurnStatus, DiscardPileInterface discardPile, DeckInterface deck, HandInterface hand, PlayInterface play, Map<GameCardType, BuyDeckInterface> buyDecks) {
+        this.newTurnStatus = newTurnStatus;
+        turnStatus = new TurnStatus(newTurnStatus.getActions(), newTurnStatus.getBuys(), newTurnStatus.getCoins());
         this.discardPile = discardPile;
         this.deck = deck;
         this.hand = hand;
@@ -25,8 +27,8 @@ public class Turn implements TurnInterface {
     }
 
     @Override
-    public void setTurnStatus(TurnStatus turnStatus) {
-        this.turnStatus = turnStatus;
+    public TurnStatus getCurrentTurnStatus() {
+        return turnStatus;
     }
 
     @Override
@@ -34,6 +36,9 @@ public class Turn implements TurnInterface {
         discardPile.addCards(play.throwAll());
         discardPile.addCards(hand.throwAll());
         hand.addCards(deck.draw(5));
+        turnStatus.setActions(newTurnStatus.getActions());
+        turnStatus.setBuys(newTurnStatus.getBuys());
+        turnStatus.setCoins(newTurnStatus.getCoins());
     }
 
     @Override
