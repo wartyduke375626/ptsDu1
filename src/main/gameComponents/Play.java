@@ -18,4 +18,9 @@ public class Play implements PlayInterface {
         cardsInPlay = new ArrayList<>();
         return tmp;
     }
+
+    @Override
+    public int getSize() {
+        return cardsInPlay.size();
+    }
 }

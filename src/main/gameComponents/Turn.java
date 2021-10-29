@@ -23,7 +23,6 @@ public class Turn implements TurnInterface {
         this.hand = hand;
         this.play = play;
         this.buyDecks = buyDecks;
-
     }
 
     @Override

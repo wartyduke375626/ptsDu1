@@ -19,11 +19,10 @@ public class AtLeastNEmptyDecks implements EndGameStrategy {
     public boolean isGameOver() {
         int empty = 0;
         for(BuyDeckInterface x : buyDecksToCheck) {
-            if (empty == n) return true;
             if (x.isEmpty()) {
                 empty++;
             }
         }
-        return false;
+        return empty == n;
     }
 }

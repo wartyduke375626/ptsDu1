@@ -17,6 +17,11 @@ public class Deck implements DeckInterface{
     }
 
     @Override
+    public int getSize() {
+        return cards.size();
+    }
+
+    @Override
     public List<CardInterface> draw(int count) {
         if (count > cards.size()) {
             cards.addAll(discardPile.shuffle());

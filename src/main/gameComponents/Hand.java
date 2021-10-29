@@ -37,4 +37,10 @@ public class Hand implements HandInterface {
         CardInterface cardPlayed = cardsInHand.remove(cardIndex);
         return Optional.of(cardPlayed);
     }
+
+    @Override
+    public Optional<CardInterface> peek(int cardIndex) {
+        if (cardIndex >= cardsInHand.size()) return Optional.empty();
+        return Optional.of(cardsInHand.get(cardIndex));
+    }
 }

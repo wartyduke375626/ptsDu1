@@ -45,6 +45,12 @@ public class TurnTest {
             }
         };
         deck = new DeckInterface() {
+
+            @Override
+            public int getSize() {
+                return 0;
+            }
+
             @Override
             public List<CardInterface> draw(int count) {
                 List<CardInterface> ret= new ArrayList<>();
@@ -82,6 +88,11 @@ public class TurnTest {
                 if (cardIndex < handSize) return Optional.of(testCard);
                 else return Optional.empty();
             }
+
+            @Override
+            public Optional<CardInterface> peek(int cardIndex) {
+                return Optional.empty();
+            }
         };
         play = new PlayInterface() {
             private int size = 0;
@@ -96,6 +107,11 @@ public class TurnTest {
                 for (int i=0; i<size; i++) ret.add(testCard);
                 size = 0;
                 return ret;
+            }
+
+            @Override
+            public int getSize() {
+                return size;
             }
         };
         buyDecks.put(testCard.getGameCardType(), new BuyDeckInterface() {

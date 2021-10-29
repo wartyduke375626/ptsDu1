@@ -10,10 +10,11 @@ public class Game implements GameInterface {
     private boolean isGameOver;
 
     public Game(TurnInterface turnInterface, EndGameStrategy endGameStrategy) {
-        isPlayCardPhase = true;
+        isPlayCardPhase = false;
         this.turnInterface = turnInterface;
         this.endGameStrategy = endGameStrategy;
         isGameOver = endGameStrategy.isGameOver();
+        endTurn();
     }
 
     @Override
