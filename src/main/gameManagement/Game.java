@@ -2,9 +2,6 @@ package gameManagement;
 
 import gameComponents.*;
 
-import java.util.List;
-import java.util.Map;
-
 public class Game {
 
     private TurnInterface turnInterface;
