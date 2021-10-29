@@ -2,7 +2,7 @@ package gameManagement;
 
 import gameComponents.*;
 
-public class Game {
+public class Game implements GameInterface {
 
     private TurnInterface turnInterface;
     private boolean isPlayCardPhase;
@@ -16,12 +16,14 @@ public class Game {
         isGameOver = endGameStrategy.isGameOver();
     }
 
+    @Override
     public boolean playCard(int handIndex) {
         if (isGameOver) return false;
         if (isPlayCardPhase) return turnInterface.playCard(handIndex);
         return false;
     }
 
+    @Override
     public boolean endPlayCardPhase() {
         if (isGameOver) return false;
         if (!isPlayCardPhase) return false;
@@ -29,12 +31,14 @@ public class Game {
         return true;
     }
 
+    @Override
     public boolean buyCard(GameCardType gameCardType) {
         if (isGameOver) return false;
         if (!isPlayCardPhase) return turnInterface.buyCard(gameCardType);
         return false;
     }
 
+    @Override
     public boolean endTurn() {
         if (isGameOver) return false;
         if (isPlayCardPhase) return false;
@@ -44,6 +48,7 @@ public class Game {
         return true;
     }
 
+    @Override
     public boolean isGameOver() {
         return isGameOver;
     }

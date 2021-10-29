@@ -56,8 +56,8 @@ public class HandTest {
         setUp();
         assertTrue(hand.isActionCard(0));
         assertFalse(hand.isActionCard(1));
-        assertThrows(IndexOutOfBoundsException.class, () -> hand.isActionCard(2));
-        assertThrows(IndexOutOfBoundsException.class, () -> emptyHand.isActionCard(0));
+        assertFalse(hand.isActionCard(2));
+        assertFalse(emptyHand.isActionCard(0));
     }
 
     @Test
@@ -70,8 +70,10 @@ public class HandTest {
         assertEquals(card1.getGameCardType(), GameCardType.GAME_CARD_TYPE_MARKET);
         assertEquals(1, hand.getSize());
         card = hand.play(0);
+        assertFalse(card.isEmpty());
+        card = hand.play(1);
         assertTrue(card.isEmpty());
-        assertThrows(IndexOutOfBoundsException.class, () -> hand.play(1));
-        assertThrows(IndexOutOfBoundsException.class, () -> emptyHand.play(0));
+        card = emptyHand.play(0);
+        assertTrue(card.isEmpty());
     }
 }

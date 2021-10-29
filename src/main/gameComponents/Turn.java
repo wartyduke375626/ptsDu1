@@ -43,11 +43,12 @@ public class Turn implements TurnInterface {
 
     @Override
     public boolean playCard(int handIndex) {
-        if (turnStatus.getActions() == 0) return false;
-        if (handIndex >= hand.getSize()) return false;
-        Optional<CardInterface> playedCard = hand.play(handIndex);
+        Optional<CardInterface> playedCard;
+        boolean isActionCard = hand.isActionCard(handIndex);
+        if (isActionCard && turnStatus.getActions() == 0) return false;
+        playedCard = hand.play(handIndex);
         if (playedCard.isEmpty()) return false;
-        turnStatus.setActions(turnStatus.getActions()-1);
+        if (isActionCard) turnStatus.setActions(turnStatus.getActions()-1);
         play.putTo(playedCard.get());
         hand.addCards(deck.draw(playedCard.get().evaluate(turnStatus)));
         return true;

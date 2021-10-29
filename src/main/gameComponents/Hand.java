@@ -27,14 +27,13 @@ public class Hand implements HandInterface {
 
     @Override
     public boolean isActionCard(int cardIndex) {
-        if (cardIndex >= cardsInHand.size()) throw new IndexOutOfBoundsException();
+        if (cardIndex >= cardsInHand.size()) return false;
         return (cardsInHand.get(cardIndex).getGameCardType().isAction());
     }
 
     @Override
     public Optional<CardInterface> play(int cardIndex) {
-        if (cardIndex >= cardsInHand.size()) throw new IndexOutOfBoundsException();
-        if (!isActionCard(cardIndex)) return Optional.empty();
+        if (cardIndex >= cardsInHand.size()) return Optional.empty();
         CardInterface cardPlayed = cardsInHand.remove(cardIndex);
         return Optional.of(cardPlayed);
     }

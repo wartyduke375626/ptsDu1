@@ -79,7 +79,7 @@ public class TurnTest {
 
             @Override
             public Optional<CardInterface> play(int cardIndex) {
-                if (isActionCard(cardIndex)) return Optional.of(testCard);
+                if (cardIndex < handSize) return Optional.of(testCard);
                 else return Optional.empty();
             }
         };
@@ -94,6 +94,7 @@ public class TurnTest {
             public List<CardInterface> throwAll() {
                 List<CardInterface> ret= new ArrayList<>();
                 for (int i=0; i<size; i++) ret.add(testCard);
+                size = 0;
                 return ret;
             }
         };
@@ -114,19 +115,29 @@ public class TurnTest {
     @Test
     public void test_playCard() {
         setUp();
+        assertEquals(turn.getCurrentTurnStatus().getActions(), 2);
+
         boolean flag = turn.playCard(0);
         assertTrue(flag);
         assertEquals(play.throwAll().size(), 1);
+        assertEquals(turn.getCurrentTurnStatus().getActions(), 1);
+
         flag = turn.playCard(1);
-        turn.playCard(1);
-        assertFalse(flag);
-        assertEquals(play.throwAll().size(), 1);
+        assertTrue(flag);
+
         turn.playCard(0);
-        assertEquals(play.throwAll().size(), 2);
         assertEquals(turn.getCurrentTurnStatus().getActions(), 0);
+
         flag = turn.playCard(0);
         assertFalse(flag);
-        assertEquals(play.throwAll().size(), 2);
+
+        flag = turn.playCard(1);
+        assertTrue(flag);
+
+        assertEquals(play.throwAll().size(), 3);
+        flag = turn.playCard(5);
+        assertFalse(flag);
+        assertEquals(play.throwAll().size(), 0);
     }
 
     @Test
