@@ -8,7 +8,7 @@ import java.util.Queue;
 public class Deck implements DeckInterface{
 
     // Cards in deck are represented by queue. The top of the deck is the front of the queue.
-    private Queue<CardInterface> cards = new ArrayDeque<>();
+    private final Queue<CardInterface> cards = new ArrayDeque<>();
     private final DiscardPileInterface discardPile;
 
 
