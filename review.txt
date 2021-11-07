@@ -1,0 +1,24 @@
+Game:
+- isGameOver je jednorázová vec (keď už je raz skončená hra, tak bude navždy skončená), preto je možno zbytočné si to pamätať ako atribút a metódu isGameOver() mať len ako getter. Skôr by som v isGameOver() volala endGameStrategy.isGameOver() a v ostatných metódach len volala isGameOver(). Prípadne nechala ošetrenie nevolania metód z Game po konci hry na vyššie triedy.
+
+Turn:
+- páči sa mi getter na TurnStatus, ja som s tým mala problémy, že nikto okrem Turn (a teda tých, ktorým je to injectnute) nemá k TurnStatusu prístup
+- v buyCard() si môžeš naraz kúpiť len jednu kartu, no aj tak ju hádžeš do nového Listu, lebo v DiscardPile máš na pridávanie kariet len metódu, čo berie List kariet. Bolo by lepšie v DiscardPile spraviť metódu na pridanie len jednej karty, ktorú by si volal, prípadne preťažiť metódu addCards(List<CardInterface> cards), aby sa dala volať aj ako addCards(CardInterface ... cards).
+- páči sa mi newTurnStatus, lebo by sa cez to dali ľahko modifikovať pravidlá ohľadom default TurnStatusu
+- v pravidlách je "You have to play your treasures in play phase (of course they don't cost actions)" ak to znamená, že máš v play fáze zahrať všetky treasure karty, tak to nerobíš. Ak to znamená, že treasure karty môžes hrať len v play fáze je to ok.
+
+Hand:
+- pri kontrolovaní, či je karta na ruke v metódach isActionCard(index), play(index), peek(index) kontroluješ len hornú hranicu, nie aj dolnú (neviem, kto by zavolal záporný index, ale môže sa stať a je lepšie to kontrolovať ako nechať spadnúť hru a netušiť, čo sa pokazilo)
+- názov peek nie je úplne výstižný, lebo metóda vracia kartu z ľubovoľného indexu a peek skôr napovedá, že by mala vracať nejakú "vrchnú kartu"
+
+Deck:
+- iba taký detail v komente píšeš, že deck je queue, čo je pravda, ale teda konkrétne je to dequeue (obojstranná queue), lebo potrebuješ pridávať karty z oboch strán
+
+Celkovo:
+- celkovo je to fajn aj pekný kód
+- nenašla som žiadne chyby v logike alebo bugy, takže super
+- väčšina, čo som ti písala sú len "kozmetické úpravy", ktoré asi ani nie sú také objektívne a ide skôr o subjektívne preferencie písania kódu
+- špecificky sa mi páči, že máš všade interface a teda môžeš písať krásne solitary testy
+- nemáš skoro nikde final premenné, kde môžu byť, neviem presne aké výhody to má písať tam to final, ale minimálne mňa hrozne štve, že to potom intellij podfarbuje :D
+
+Jitka Muravská
