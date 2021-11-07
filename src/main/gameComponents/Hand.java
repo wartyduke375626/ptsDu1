@@ -27,19 +27,22 @@ public class Hand implements HandInterface {
 
     @Override
     public boolean isActionCard(int cardIndex) {
+        if (cardIndex < 0) throw new IllegalArgumentException("Negative cardIndex");
         if (cardIndex >= cardsInHand.size()) return false;
         return (cardsInHand.get(cardIndex).getGameCardType().isAction());
     }
 
     @Override
     public Optional<CardInterface> play(int cardIndex) {
+        if (cardIndex < 0) throw new IllegalArgumentException("Negative cardIndex");
         if (cardIndex >= cardsInHand.size()) return Optional.empty();
         CardInterface cardPlayed = cardsInHand.remove(cardIndex);
         return Optional.of(cardPlayed);
     }
 
     @Override
-    public Optional<CardInterface> peek(int cardIndex) {
+    public Optional<CardInterface> lookAt(int cardIndex) {
+        if (cardIndex < 0) throw new IllegalArgumentException("Negative cardIndex");
         if (cardIndex >= cardsInHand.size()) return Optional.empty();
         return Optional.of(cardsInHand.get(cardIndex));
     }

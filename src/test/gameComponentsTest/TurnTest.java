@@ -95,7 +95,7 @@ public class TurnTest {
             }
 
             @Override
-            public Optional<CardInterface> peek(int cardIndex) {
+            public Optional<CardInterface> lookAt(int cardIndex) {
                 return Optional.empty();
             }
         };

@@ -58,6 +58,7 @@ public class HandTest {
         assertFalse(hand.isActionCard(1));
         assertFalse(hand.isActionCard(2));
         assertFalse(emptyHand.isActionCard(0));
+        assertThrows(IllegalArgumentException.class, () -> hand.isActionCard(-2));
     }
 
     @Test
@@ -75,5 +76,19 @@ public class HandTest {
         assertTrue(card.isEmpty());
         card = emptyHand.play(0);
         assertTrue(card.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> hand.play(-2));
+    }
+
+    @Test
+    public void test_lookAt() {
+        setUp();
+        Optional<CardInterface> card = hand.lookAt(0);
+        assertEquals(2, hand.getSize());
+        assertTrue(card.isPresent());
+        assertEquals(card.get().getGameCardType(), GameCardType.GAME_CARD_TYPE_MARKET);
+        card = hand.lookAt(2);
+        assertEquals(2, hand.getSize());
+        assertTrue(card.isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> hand.lookAt(-2));
     }
 }

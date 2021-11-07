@@ -9,6 +9,6 @@ public interface HandInterface {
     public List<CardInterface> throwAll();
     public boolean isActionCard(int cardIndex);
     public Optional<CardInterface> play(int cardIndex);
-    public Optional<CardInterface> peek(int cardIndex);
+    public Optional<CardInterface> lookAt(int cardIndex);
 
 }

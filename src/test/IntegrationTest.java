@@ -66,7 +66,7 @@ public class IntegrationTest {
         setUp();
         assertEquals(hand.getSize(), 5);
 
-        while (hand.peek(0).isPresent()) {
+        while (hand.lookAt(0).isPresent()) {
             assertTrue(game.playCard(0));
         }
 
@@ -93,7 +93,7 @@ public class IntegrationTest {
         turn.getCurrentTurnStatus().setCoins(1000);
         turn.getCurrentTurnStatus().setBuys(10);
         for (int i=0; i<10; i++) assertTrue(game.buyCard(GameCardType.GAME_CARD_TYPE_PROVINCE));
-        assertTrue(game.endTurn());
+        assertFalse(game.endTurn());
         assertTrue(game.isGameOver());
     }
 
@@ -116,7 +116,6 @@ public class IntegrationTest {
         turn.getCurrentTurnStatus().setCoins(1000);
         turn.getCurrentTurnStatus().setBuys(10);
         for (int i=0; i<10; i++) assertTrue(game.buyCard(GameCardType.GAME_CARD_TYPE_FESTIVAL));
-        assertTrue(game.endTurn());
         assertTrue(game.isGameOver());
         assertFalse(game.endPlayCardPhase());
     }
