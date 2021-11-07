@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public class Turn implements TurnInterface {
 
-    private TurnStatus turnStatus;
+    private final TurnStatus turnStatus;
     private final TurnStatus newTurnStatus; //TurnStatus values that will be set after end of each turn
-    private DiscardPileInterface discardPile;
-    private DeckInterface deck;
-    private HandInterface hand;
-    private PlayInterface play;
-    private Map<GameCardType, BuyDeckInterface> buyDecks;
+    private final DiscardPileInterface discardPile;
+    private final DeckInterface deck;
+    private final HandInterface hand;
+    private final PlayInterface play;
+    private final Map<GameCardType, BuyDeckInterface> buyDecks;
 
     public Turn(TurnStatus newTurnStatus, DiscardPileInterface discardPile, DeckInterface deck, HandInterface hand, PlayInterface play, Map<GameCardType, BuyDeckInterface> buyDecks) {
         this.newTurnStatus = newTurnStatus;
@@ -62,9 +62,7 @@ public class Turn implements TurnInterface {
         if (boughtCard.isEmpty()) return false;
         turnStatus.setBuys(turnStatus.getBuys()-1);
         turnStatus.setCoins(turnStatus.getCoins()-boughtCard.get().getGameCardType().getCost());
-        List<CardInterface> toDiscardPile = new ArrayList<>();
-        toDiscardPile.add(boughtCard.get());
-        discardPile.addCards(toDiscardPile);
+        discardPile.addCards(boughtCard.get());
         return true;
     }
 }

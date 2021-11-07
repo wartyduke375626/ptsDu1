@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class TurnTest {
 
-    private CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER);
+    private final CardInterface testCard = new FakeCard(GameCardType.GAME_CARD_TYPE_COPPER);
 
     private final TurnStatus newTurnStatus = new TurnStatus(2,1,0);
     private DiscardPileInterface discardPile;
@@ -32,6 +32,11 @@ public class TurnTest {
             @Override
             public void addCards(List<CardInterface> cards) {
                 size += cards.size();
+            }
+
+            @Override
+            public void addCards(CardInterface... cards) {
+                for (CardInterface x : cards) size++;
             }
 
             @Override

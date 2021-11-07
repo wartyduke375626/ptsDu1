@@ -34,6 +34,11 @@ public class DeckTest {
             }
 
             @Override
+            public void addCards(CardInterface... cards) {
+
+            }
+
+            @Override
             public int getSize() {
                 if (empty) return 0;
                 else return 10;

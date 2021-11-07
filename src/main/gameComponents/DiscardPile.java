@@ -24,6 +24,11 @@ public class DiscardPile implements DiscardPileInterface {
     }
 
     @Override
+    public void addCards(CardInterface... cards) {
+        this.cards.addAll(List.of(cards));
+    }
+
+    @Override
     public int getSize() {
         return cards.size();
     }
